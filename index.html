@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Card Capitã Marvel - Efeito Pop-Out</title>
+    <title>Card Capitã Marvel - Pop-Out Controlado</title>
     <style>
         /* Configuração do fundo externo (fora do retângulo) */
         body {
@@ -25,13 +25,12 @@
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             display: flex;
-            align-items: flex-end; /* Alinha o conteúdo (texto e imagem base) na parte inferior */
-            justify-content: center; /* Centralizado inicialmente */
+            align-items: flex-end; 
+            justify-content: space-between; /* MODIFICADO: Garante separação total entre texto e imagem */
             padding: 30px;
-            /* overflow: hidden;  <-- REMOVIDO: Agora permitimos que o conteúdo saia */
             box-sizing: border-box;
             transition: all 0.5s ease-in-out;
-            position: relative; /* Importante para o posicionamento da imagem */
+            position: relative; 
         }
 
         /* Container do Texto e Botão (Lado Esquerdo) */
@@ -41,11 +40,11 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* Alinha o texto no topo */
+            justify-content: flex-start; 
             transition: max-width 0.6s ease-in-out, opacity 0.4s ease-in-out;
-            overflow: hidden; /* O texto ainda é cortado para o efeito de expansão */
+            overflow: hidden; 
             box-sizing: border-box;
-            z-index: 1; /* Garante que o texto fique abaixo da imagem pop-out se necessário */
+            z-index: 1; 
         }
 
         /* Título */
@@ -55,7 +54,7 @@
             color: white;
             text-transform: uppercase;
             letter-spacing: 1px;
-            border-bottom: 2px solid #fcd116; /* Amarelo clássico da estrela dela */
+            border-bottom: 2px solid #fcd116; 
             padding-bottom: 5px;
             width: fit-content;
         }
@@ -77,9 +76,9 @@
             background-color: #fcd116; 
             color: #1a1a1a;
             border: none;
-            padding: 8px 26px;        /* Ajustado para equilibrar com o texto menor */
-            border-radius: 50px;       /* Aumentado para dar o formato oval perfeito */
-            font-size: 0.8rem;         /* Tamanho do texto diminuído */
+            padding: 8px 26px;        
+            border-radius: 50px;       
+            font-size: 0.8rem;         
             font-weight: bold;
             cursor: pointer;
             text-decoration: none;
@@ -89,7 +88,7 @@
             margin-bottom: 10px; 
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
             filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
-            letter-spacing: 0.5px;     /* Um leve espaçamento para melhor leitura no tamanho menor */
+            letter-spacing: 0.5px;     
         }
 
         /* Efeito de hover no próprio botão */
@@ -99,33 +98,32 @@
             box-shadow: 0 0 15px rgba(252, 209, 22, 0.6); 
         }
 
-        /* Imagem da Capitã Marvel (Tag idêntica, posicionada para o pop-out) */
+        /* Imagem da Capitã Marvel */
         .character-img {
             height: auto;
-            max-height: 480px; /* Um pouco maior que o card para começar alinhada embaixo */
+            max-height: 100%; /* Mantém a imagem dentro da altura do card inicialmente */
             object-fit: contain;
-            transition: transform 0.6s ease-in-out, filter 0.5s ease-in-out, margin 0.6s ease-in-out, opacity 0.5s ease-in-out;
+            transition: transform 0.6s ease-in-out, filter 0.5s ease-in-out;
             pointer-events: none; 
-            position: absolute; /* Fundamental para o efeito */
-            bottom: 0; /* Alinha a base da imagem com a base do card */
-            right: 10px; /* Ajuste inicial para a direita */
-            transform: scale(1) translateY(0); /* Estado inicial: sem zoom, sem subir */
-            z-index: 2; /* Fica acima do container e do texto */
-            opacity: 1;
+            position: absolute; 
+            bottom: 0; /* Trava a base da imagem rigidamente no fundo do card */
+            right: 30px; 
+            transform: scale(1); 
+            transform-origin: bottom center; /* NOVO: Faz o zoom crescer a partir da base (a base não mexe!) */
+            z-index: 2; 
         }
 
         /* --- EFEITO AO PASSAR O MOUSE NO RETÂNGULO --- */
         .card-container:hover .left-content {
-            max-width: 50%; /* Abriu espaço para a imagem pop-out */
+            max-width: 50%; /* Limita o texto em 50% para nunca bater na imagem */
             opacity: 1;
             margin-right: 20px;
         }
 
-        /* O EFEITO POP-OUT AQUI */
+        /* O EFEITO POP-OUT RESTRITO */
         .card-container:hover .character-img {
-            transform: scale(1.35) translateY(-50px); /* Aumenta 35% e SUBE 50px para fora do card */
-            filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.5)); /* Sombra forte para realçar que saiu do plano */
-            right: -30px; /* Move ligeiramente mais para a direita para transbordar a lateral também */
+            transform: scale(1.25); /* Aumenta a imagem. Como a origem é o 'bottom', ela só expande para cima e pros lados */
+            filter: drop-shadow(0 -10px 15px rgba(0, 0, 0, 0.3)); /* Sombra focada no topo para destacar a saída */
         }
     </style>
 </head>
